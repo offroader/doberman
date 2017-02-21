@@ -60,7 +60,7 @@ Ext.define('app.menu.Panel', {
         
         var logoButton = Ext.create('Ext.button.Button', {
             text: 'Doberman',
-            icon: 'static/icon/track.png',
+            icon: 'static/icon/favicon.png',
             scale: 'large',
             align: 'center',
             style: {
