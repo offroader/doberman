@@ -111,8 +111,26 @@ Ext.define('app.image.Panel', {
         }
         
         that.restoreImage = function () {
-            if (storedData) {
+            if (canvasContainer.isVisible() && storedData) {
                 context.putImageData(storedData, 0, 0)
+            }
+        }
+        
+        that.downloadImage = function () {
+            if (canvasContainer.isVisible()) {
+                var link = document.createElement('a')
+                link.setAttribute('download', 'download.png');
+                //link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+                link.setAttribute('href', canvas.toDataURL())
+                link.click()
+            }
+        }
+        
+        that.clearImage = function () {
+            if (canvasContainer.isVisible()) {
+                buttonContainer.setVisible(true)
+                canvasContainer.setVisible(false)
+                context.clearRect(0, 0, canvas.width, canvas.height)
             }
         }
         

@@ -23,27 +23,54 @@ Ext.define('app.menu.Panel', {
             return Ext.create('Ext.button.Button', {
                 text: config.text,
                 icon: config.icon,
-                scale: 'large',
+                //scale: 'large',
                 align: 'center',
-                style: {
-                    marginLeft: 10
-                },
                 handler: function () {
                     that.fireEvent('addFilter', config.filter)
                 }
             })
         })
         
+        var downloadButton = Ext.create('Ext.button.Button', {
+            text: 'გადმოწერა',
+            iconCls: 'fa fa-download',
+            align: 'center',
+            handler: function () {
+                that.fireEvent('downloadImage')
+            }
+        })
+        
+        var newButton = Ext.create('Ext.button.Button', {
+            text: 'ახალი',
+            iconCls: 'fa fa-file-o',
+            align: 'center',
+            handler: function () {
+                that.fireEvent('clearImage')
+            }
+        })
+        
         var restoreButton = Ext.create('Ext.button.Button', {
             text: 'აღდგენა',
-            scale: 'large',
+            iconCls: 'fa fa-clipboard',
             align: 'center',
             handler: function () {
                 that.fireEvent('restoreImage')
             }
         })
         
-        menuItems.push('->', restoreButton)
+        var logoButton = Ext.create('Ext.button.Button', {
+            text: 'Doberman',
+            icon: 'static/icon/track.png',
+            scale: 'large',
+            align: 'center',
+            style: {
+                marginRight: '20px'
+            },
+            disabled: true
+        })
+
+        menuItems.unshift(logoButton)
+        menuItems.push('->', downloadButton, newButton, restoreButton)
         
         that.tbar = menuItems
         

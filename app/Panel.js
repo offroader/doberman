@@ -13,8 +13,14 @@ Ext.define('app.Panel', {
                 addFilter: function (filter) {
                     imagePanel.addFilter(filter)
                 },
+                downloadImage: function () {
+                    imagePanel.downloadImage()
+                },
                 restoreImage: function () {
                     imagePanel.restoreImage()
+                },
+                clearImage: function () {
+                    imagePanel.clearImage()
                 }
             }
         })
