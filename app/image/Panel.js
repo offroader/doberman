@@ -48,6 +48,8 @@ Ext.define('app.image.Panel', {
                         
                         URL.revokeObjectURL(src)
                         
+                        input.value = ''
+                        
                         buttonContainer.setVisible(false)
                         canvasContainer.setVisible(true)
                     }
