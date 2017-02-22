@@ -122,8 +122,7 @@ Ext.define('app.image.Panel', {
             if (canvasContainer.isVisible()) {
                 var link = document.createElement('a')
                 link.setAttribute('download', 'download.png');
-                //link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
-                link.setAttribute('href', canvas.toDataURL())
+                link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
                 link.click()
             }
         }
