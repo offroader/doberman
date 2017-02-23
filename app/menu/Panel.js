@@ -19,6 +19,15 @@ Ext.define('app.menu.Panel', {
         }, {
             text: 'სეპია',
             filter: 'sepia'
+        }, {
+            text: 'ბუნდოვანი',
+            filter: 'blur'
+        }, {
+            text: 'ლაპლასის ფილტრი',
+            filter: 'laplacian'
+        }, {
+            text: 'წიბოების დეტექცია',
+            filter: 'edgeDetection'
         }]
         
         var filterMenuItems = Ext.Array.map(menuConfig, function (config) {
@@ -26,7 +35,6 @@ Ext.define('app.menu.Panel', {
                 text: config.text,
                 icon: config.icon,
                 align: 'center',
-                width: ITEM_WIDTH,
                 handler: function () {
                     that.fireEvent('addFilter', config.filter)
                 }
