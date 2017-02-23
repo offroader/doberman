@@ -14,6 +14,9 @@ Ext.define('app.menu.Panel', {
             text: 'ერთფეროვანი',
             filter: 'monochrome'
         }, {
+            text: 'ერთფეროვანი-2',
+            filter: 'monochromeOtsu'
+        }, {
             text: 'ინვერსია',
             filter: 'invertColors'
         }, {
