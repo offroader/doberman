@@ -150,6 +150,18 @@ Ext.define('app.image.Panel', {
             }
         }
         
+        that.flipH = function () {
+            if (canvasContainer.isVisible()) {
+                utils.flipH(context, canvas)
+            }
+        }
+        
+        that.flipV = function () {
+            if (canvasContainer.isVisible()) {
+                utils.flipV(context, canvas)
+            }
+        }
+        
         function scaleImage (from, to) {
             var w = from.width,
                 h = from.height;

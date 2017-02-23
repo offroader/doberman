@@ -27,6 +27,12 @@ Ext.define('app.Panel', {
                 },
                 rotateRight: function () {
                     imagePanel.rotateRight()
+                },
+                flipH: function () {
+                    imagePanel.flipH()
+                },
+                flipV: function () {
+                    imagePanel.flipV()
                 }
             }
         })

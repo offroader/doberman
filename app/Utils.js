@@ -25,6 +25,7 @@ Ext.define('app.Utils', {
         }
         
         that.rotate = rotate
+        that.flip = flip
         
         function invertColors (c) {
             var imageData = c.getImageData(0, 0, canvas.width, canvas.height)
@@ -155,6 +156,64 @@ Ext.define('app.Utils', {
                 // we’re done with the rotating so restore the unrotated context
                 context.restore();
             }
+        }
+        
+        function flipH (c, canvas) {
+            var imageData = c.getImageData(0, 0, canvas.width, canvas.height)
+            var data = imageData.data
+            var length = data.length
+            
+            var newData = []
+            
+            for (var i = 0; i < length; i += 4) {
+                var r = data[length - 1 - i - 3],
+                    g = data[length - 1 - i - 2],
+                    b = data[length - 1 - i - 1],
+                    a = data[length - 1 - i];
+                    
+                newData[i] = r
+                newData[i + 1] = g
+                newData[i + 2] = b
+                newData[i + 3] = a
+            }
+            
+            for (var i = 0; i < length; i += 4) {
+                data[i] = newData[i]
+                data[i + 1] = newData[i + 1]
+                data[i + 2] = newData[i + 2]
+                data[i + 3] = newData[i + 3]
+            }
+            
+            c.putImageData(imageData, 0, 0)
+        }
+        
+        function flipV (c, canvas) {
+            var imageData = c.getImageData(0, 0, canvas.width, canvas.height)
+            var data = imageData.data
+            var length = data.length
+            
+            var newData = []
+            
+            for (var i = 0; i < length; i += 4) {
+                var r = data[length - 1 - i - 3],
+                    g = data[length - 1 - i - 2],
+                    b = data[length - 1 - i - 1],
+                    a = data[length - 1 - i];
+                    
+                newData[i] = r
+                newData[i + 1] = g
+                newData[i + 2] = b
+                newData[i + 3] = a
+            }
+            
+            for (var i = 0; i < length; i += 4) {
+                data[i] = newData[i]
+                data[i + 1] = newData[i + 1]
+                data[i + 2] = newData[i + 2]
+                data[i + 3] = newData[i + 3]
+            }
+            
+            c.putImageData(imageData, 0, 0)
         }
         
         function edgeDetection (c, notPut) {
