@@ -8,6 +8,7 @@ Ext.define('app.Utils', {
             monochrome: monochrome,
             monochromeOtsu: monochromeOtsu,
             sepia: sepia,
+            sepia2: sepia2,
             blur: blur,
             laplacian: laplacian,
             edgeDetection: edgeDetection
@@ -65,8 +66,8 @@ Ext.define('app.Utils', {
             
             c.putImageData(imageData, 0, 0)
         }
-        
-        function sepia (c) {
+
+        function sepia2 (c) {
             grayScale(c)
             
             var imageData = c.getImageData(0, 0, canvas.width, canvas.height)
@@ -84,6 +85,26 @@ Ext.define('app.Utils', {
                 data[i] = r * 0.439 * coef
                 data[i + 1] = g * 0.259 * coef
                 data[i + 2] = b * 0.078 * coef
+            }
+            
+            c.putImageData(imageData, 0, 0)
+        }
+        
+        function sepia (c) {
+            grayScale(c)
+            
+            var imageData = c.getImageData(0, 0, canvas.width, canvas.height)
+            
+            var data = imageData.data
+            
+            for (var i = 0; i < data.length; i += 4) {
+                var r = data[i],
+                    g = data[i + 1],
+                    b = data[i + 2];
+
+                data[i] = r * 0.393 + g * 0.769 + b * 0.189
+                data[i + 1] = r * 0.349 + g * 0.686 + b * 0.168
+                data[i + 2] = r * 0.272 + g * 0.534 + b * 0.131
             }
             
             c.putImageData(imageData, 0, 0)
@@ -342,7 +363,7 @@ Ext.define('app.Utils', {
         
         
         // https://en.wikipedia.org/wiki/Otsu's_method
-        function otsu(histogram, pixelsNumber) {
+        function otsuBug(histogram, pixelsNumber) {
             var sum = 0
               , sumB = 0
               , wB = 0
@@ -371,6 +392,47 @@ Ext.define('app.Utils', {
             return threshold;
         }
         
+        function otsu (histogram, total) {
+            var sum = 0
+            for (var i = 0; i < histogram.length; ++i) {
+                sum += i * histogram[i]
+            }
+            
+            var sumB = 0;
+            var wB = 0;
+            var wF = 0;
+            var mB;
+            var mF;
+            var max = 0.0;
+            var between = 0.0;
+            var threshold1 = 0.0;
+            var threshold2 = 0.0;
+            
+            for (var i = 0; i < histogram.length; ++i) {
+                wB += histogram[i];
+                if (wB == 0)
+                    continue;
+                    
+                wF = total - wB;
+                if (wF == 0)
+                    break;
+                    
+                sumB += i * histogram[i];
+                mB = sumB / wB;
+                mF = (sum - sumB) / wF;
+                between = wB * wF * (mB - mF) * (mB - mF);
+                
+                if ( between >= max ) {
+                    threshold1 = i;
+                    if ( between > max ) {
+                        threshold2 = i;
+                    }
+                    max = between;            
+                }
+            }
+            
+            return ( threshold1 + threshold2 ) / 2.0;
+        }
         
         function monochromeOtsu (c) {
             var imageData = c.getImageData(0, 0, canvas.width, canvas.height)
@@ -395,13 +457,12 @@ Ext.define('app.Utils', {
             console.log("threshold = %s", threshold)
             
             for (var i = 0; i < imageData.data.length; i += 4) {
-                imageData.data[i] = imageData.data[i] >= threshold ? 255 : 0
-                imageData.data[i + 1] = imageData.data[i + 1] >= threshold ? 255 : 0
-                imageData.data[i + 2] = imageData.data[i + 2] >= threshold ? 255 : 0
+                var color = imageData.data[i] >= threshold ? 255 : 0
+                imageData.data[i] = imageData.data[i + 1] = imageData.data[i + 2] = color
                 imageData.data[i + 3] = 255
             }
 
             c.putImageData(imageData, 0, 0)
         }
     }
-})        
+})

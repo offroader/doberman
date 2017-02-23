@@ -14,7 +14,7 @@ Ext.define('app.menu.Panel', {
             text: 'ერთფეროვანი',
             filter: 'monochrome'
         }, {
-            text: 'ერთფეროვანი-2',
+            text: 'ოტსუს მეთოდი',
             filter: 'monochromeOtsu'
         }, {
             text: 'ინვერსია',
@@ -22,6 +22,9 @@ Ext.define('app.menu.Panel', {
         }, {
             text: 'სეპია',
             filter: 'sepia'
+        }, {
+            text: 'სეპია-2',
+            filter: 'sepia2'
         }, {
             text: 'ბუნდოვანი',
             filter: 'blur'
