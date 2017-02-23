@@ -25,7 +25,8 @@ Ext.define('app.Utils', {
         }
         
         that.rotate = rotate
-        that.flip = flip
+        that.flipH = flipH
+        that.flipV = flipV
         
         function invertColors (c) {
             var imageData = c.getImageData(0, 0, canvas.width, canvas.height)
