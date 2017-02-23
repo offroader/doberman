@@ -11,7 +11,9 @@ Ext.define('app.image.Panel', {
 
         var canvas,
             context,
-            storedData;
+            storedData,
+            storedWidth,
+            storedHeight;
         
         var uploadButton = Ext.create('Ext.form.field.File', {
             buttonText: 'ატვირთვა...',
@@ -39,8 +41,8 @@ Ext.define('app.image.Panel', {
                         
                         context.clearRect(0, 0, canvas.width, canvas.height)
                         
-                        canvas.width = size.width
-                        canvas.height = size.height
+                        canvas.width = storedWidth = size.width
+                        canvas.height = storedHeight = size.height
                         
                         context.drawImage(image, 0, 0, size.width, size.height)
                         
@@ -91,6 +93,7 @@ Ext.define('app.image.Panel', {
         var canvasId = Ext.id()
         var canvasContainer = Ext.create('Ext.panel.Panel', {
             layout: 'fit',
+            overflowY: true,
             html: '<canvas id="' + canvasId + '"></canvas>',
             hidden: true
         })
@@ -100,8 +103,6 @@ Ext.define('app.image.Panel', {
         that.callParent(arguments)
         
         that.on('afterrender', function () {
-            console.log('Event after render image panel')
-            
             canvas = document.getElementById(canvasId)
             canvas.width = MAX_WIDTH
             canvas.height = MAX_HEIGHT
@@ -114,6 +115,8 @@ Ext.define('app.image.Panel', {
         
         that.restoreImage = function () {
             if (canvasContainer.isVisible() && storedData) {
+                canvas.width = storedWidth
+                canvas.height = storedHeight
                 context.putImageData(storedData, 0, 0)
             }
         }
@@ -132,6 +135,18 @@ Ext.define('app.image.Panel', {
                 buttonContainer.setVisible(true)
                 canvasContainer.setVisible(false)
                 context.clearRect(0, 0, canvas.width, canvas.height)
+            }
+        }
+        
+        that.rotateLeft = function () {
+            if (canvasContainer.isVisible()) {
+                utils.rotate(canvas, context, -90)
+            }
+        }
+        
+        that.rotateRight = function () {
+            if (canvasContainer.isVisible()) {
+                utils.rotate(canvas, context, 90)
             }
         }
         

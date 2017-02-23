@@ -19,6 +19,8 @@ Ext.define('app.Utils', {
             }
         }
         
+        that.rotate = rotate
+        
         function invertColors (c) {
             var imageData = c.getImageData(0, 0, canvas.width, canvas.height)
             
@@ -101,6 +103,34 @@ Ext.define('app.Utils', {
             c.putImageData(imageData, 0, 0)
         }
         
+        
+        function rotate (canvas, context, degrees) {
+            var image = new Image()
+            image.src = canvas.toDataURL("image/png")
+            image.onload = function () {
+                canvas.width = image.height
+                canvas.height = image.width
+                
+                context.clearRect(0,0,canvas.width,canvas.height);
+
+                // save the unrotated context of the canvas so we can restore it later
+                // the alternative is to untranslate & unrotate after drawing
+                context.save();
+
+                // move to the center of the canvas
+                context.translate(canvas.width/2,canvas.height/2);
+
+                // rotate the canvas to the specified degrees
+                context.rotate(degrees*Math.PI/180);
+
+                // draw the image
+                // since the context is rotated, the image will be rotated also
+                context.drawImage(image,-image.width/2,-image.height/2);
+
+                // we’re done with the rotating so restore the unrotated context
+                context.restore();
+            }
+        }
         
         function tmp () {
             function edgeDetection (notPut) {
@@ -277,7 +307,7 @@ Ext.define('app.Utils', {
                c.putImageData(imageData, 0, 0);
             }
 
-            function laplacianFilter (notPut) {
+            function laplacianFilter () {
                 var edgeData = edgeDetection(true);
                 var eData = edgeData.data;
                 
@@ -301,27 +331,11 @@ Ext.define('app.Utils', {
                 p1 = p1.data;
                 p2 = p2.data;
                 var pd = p.data;
-                pd[0] = (p1[0] + p2[0]) / 2; //r
-                pd[1] = (p1[1] + p2[1]) / 2; //g
-                pd[2] = (p1[2] + p2[2]) / 2; //b
+                pd[0] = (p1[0] + p2[0]) / 2; /* red */
+                pd[1] = (p1[1] + p2[1]) / 2; /* green */
+                pd[2] = (p1[2] + p2[2]) / 2; /* blue */
                 pd[3] = 255;
                 return p;
-            }
-                        
-            
-            var okButton = document.getElementById('okButton')
-            var select = document.getElementById('select')
-            okButton.onclick = function () {
-                var fs = {
-                    1: invertColor,
-                    2: grayScale,
-                    3: sepia,
-                    4: edgeDetection,
-                    5: laplacianFilter,
-                    6: blur,
-                    7: monochrome
-                }
-                fs[select.value]()
             }
         }
 
