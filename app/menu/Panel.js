@@ -3,43 +3,53 @@ Ext.define('app.menu.Panel', {
     constructor: function () {
         var that = this
         
-        const ITEM_WIDTH = 150
+        const ITEM_WIDTH = 160
         
         var utils = Ext.create('app.Utils')
         
         var menuConfig = [{
             text: 'შავ-თეთრი',
-            filter: 'grayScale'
+            filter: 'grayScale',
+            icon: 'static/icon/grayscale.png'
         }, {
             text: 'ერთფეროვანი',
-            filter: 'monochrome'
+            filter: 'monochrome',
+            iconCls: 'fa fa-square'
         }, {
             text: 'ოტსუს მეთოდი',
-            filter: 'monochromeOtsu'
+            filter: 'monochromeOtsu',
+            iconCls: 'fa fa-square'
         }, {
             text: 'ინვერსია',
-            filter: 'invertColors'
+            filter: 'invertColors',
+            icon: 'static/icon/inverse.png'
         }, {
             text: 'სეპია',
-            filter: 'sepia'
+            filter: 'sepia',
+            icon: 'static/icon/sepia.png'
         }, {
             text: 'სეპია-2',
-            filter: 'sepia2'
+            filter: 'sepia2',
+            icon: 'static/icon/sepia.png'
         }, {
             text: 'ბუნდოვანი',
-            filter: 'blur'
+            filter: 'blur',
+            icon: 'static/icon/blur.png'
         }, {
             text: 'ლაპლასის ფილტრი',
-            filter: 'laplacian'
+            filter: 'laplacian',
+            icon: 'static/icon/laplace.png'
         }, {
             text: 'წიბოების დეტექცია',
-            filter: 'edgeDetection'
+            filter: 'edgeDetection',
+            icon: 'static/icon/edge.png'
         }]
         
         var filterMenuItems = Ext.Array.map(menuConfig, function (config) {
             return Ext.create('Ext.menu.Item', {
                 text: config.text,
                 icon: config.icon,
+                iconCls: config.iconCls,
                 align: 'center',
                 handler: function () {
                     that.fireEvent('addFilter', config.filter)
@@ -61,7 +71,9 @@ Ext.define('app.menu.Panel', {
         
         var fileMenu = Ext.create('Ext.button.Split', {
             text: 'ფაილი',
+            iconCls: 'fa fa-file-o',
             width: ITEM_WIDTH,
+            textAlign: 'left',
             handler: expandMenu,
             menu: Ext.create('Ext.menu.Menu', {
                 items: [{
@@ -92,7 +104,9 @@ Ext.define('app.menu.Panel', {
         
         var filterMenu = Ext.create('Ext.button.Split', {
             text: 'ფილტრი',
+            iconCls: 'fa fa-filter',
             width: ITEM_WIDTH,
+            textAlign: 'left',
             handler: expandMenu,
             menu: Ext.create('Ext.menu.Menu', {
                 items: filterMenuItems
@@ -101,7 +115,9 @@ Ext.define('app.menu.Panel', {
         
         var editMenu = Ext.create('Ext.button.Split', {
             text: 'რედაქტირება',
+            iconCls: 'fa fa-pencil',
             width: ITEM_WIDTH,
+            textAlign: 'left',
             handler: expandMenu,
             menu: Ext.create('Ext.menu.Menu', {
                 items: [{
@@ -119,13 +135,21 @@ Ext.define('app.menu.Panel', {
                     }
                 }, {
                     text: 'ჰორიზ. ანარეკლი',
+                    iconCls: 'fa fa-arrows-h',
                     handler: function () {
                         that.fireEvent('flipH')
                     }
                 }, {
                     text: 'ვერტ. ანარეკლი',
+                    iconCls: 'fa fa-arrows-v',
                     handler: function () {
                         that.fireEvent('flipV')
+                    }
+                }, {
+                    text: 'ამოჭრა',
+                    iconCls: 'fa fa-crop',
+                    handler: function () {
+                        that.fireEvent('crop')
                     }
                 }]
             })
