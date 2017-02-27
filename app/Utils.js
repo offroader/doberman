@@ -164,25 +164,26 @@ Ext.define('app.Utils', {
             var data = imageData.data
             var length = data.length
             
-            var newData = []
+            var width = canvas.width
             
-            for (var i = 0; i < length; i += 4) {
-                var r = data[length - 1 - i - 3],
-                    g = data[length - 1 - i - 2],
-                    b = data[length - 1 - i - 1],
-                    a = data[length - 1 - i];
-                    
-                newData[i] = r
-                newData[i + 1] = g
-                newData[i + 2] = b
-                newData[i + 3] = a
+            var height = canvas.height / 2
+            if (height % 2 == 0) {
+                height++
             }
             
-            for (var i = 0; i < length; i += 4) {
+            var newData = []
+            
+            for (var j = 0; j < height; j += 4 * width) {
+                for (var i = 0; i < width; i++) {
+                    newData[length - j * width + i] = data[j * width + i]
+                    newData[length - j * width + i + 1] = data[j * width + i + 1]
+                    newData[length - j * width + i + 2] = data[j * width + i + 2]
+                    newData[length - j * width + i + 3] = data[j * width + i + 3]
+                }
+            }
+            
+            for (var i = 0; i < length; i++) {
                 data[i] = newData[i]
-                data[i + 1] = newData[i + 1]
-                data[i + 2] = newData[i + 2]
-                data[i + 3] = newData[i + 3]
             }
             
             c.putImageData(imageData, 0, 0)
