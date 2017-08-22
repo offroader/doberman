@@ -154,8 +154,28 @@ Ext.define('app.menu.Panel', {
                 }]
             })
         })
-
-        that.tbar = [logo, fileMenu, filterMenu, editMenu]
+        
+        var contrastButton = Ext.create('Ext.button.Button', {
+            icon: 'static/icon/grayscale.png',
+            style: {marginRight: '0'},
+            handler: function () {
+            	that.fireEvent('contrast', contrastField.getValue())
+            }
+        })
+        
+        var contrastField = Ext.create('Ext.form.field.Number', {
+        	width: 80,
+        	minValue: -255,
+        	maxValue: 255,
+        	value: 0,
+        	listeners: {
+        		change: function (field) {
+        			that.fireEvent('contrast', field.getValue())
+        		}
+        	}
+        })
+        
+        that.tbar = [logo, fileMenu, filterMenu, contrastButton, contrastField, editMenu]
         
         that.callParent(arguments)
         

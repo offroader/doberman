@@ -33,6 +33,9 @@ Ext.define('app.Panel', {
                 },
                 flipV: function () {
                     imagePanel.flipV()
+                },
+                contrast: function (contrast) {
+                	imagePanel.contrast(contrast)
                 }
             }
         })

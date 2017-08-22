@@ -113,6 +113,10 @@ Ext.define('app.image.Panel', {
             utils.addFilter(canvas, filter)
         }
         
+        that.contrast = function (contrast) {
+        	utils.contrast(canvas, contrast)
+        }
+        
         that.restoreImage = function () {
             if (canvasContainer.isVisible() && storedData) {
                 canvas.width = storedWidth

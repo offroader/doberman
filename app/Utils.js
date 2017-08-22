@@ -28,6 +28,11 @@ Ext.define('app.Utils', {
         that.flipH = flipH
         that.flipV = flipV
         
+        that.contrast = function (_canvas, con) {
+            canvas = _canvas
+        	contrast(canvas.getContext('2d'), con)
+        }
+        
         function invertColors (c) {
             var imageData = c.getImageData(0, 0, canvas.width, canvas.height)
             
@@ -523,6 +528,31 @@ Ext.define('app.Utils', {
                 imageData.data[i + 3] = 255
             }
 
+            c.putImageData(imageData, 0, 0)
+        }
+        
+        function contrast (c, con) {
+        	var imageData = c.getImageData(0, 0, canvas.width, canvas.height)
+            
+            var data = imageData.data
+            
+            for (var i = 0; i < data.length; i += 4) {
+                var r = data[i],
+                    g = data[i + 1],
+                    b = data[i + 2],
+                    a = data[i + 3];
+                    
+	            var factor = (259 * (con + 255)) / (255 * (259 - con))
+	            
+				var newRed   = Math.floor(factor * (r   - 128) + 128)
+				var newGreen = Math.floor(factor * (g - 128) + 128)
+				var newBlue  = Math.floor(factor * (b  - 128) + 128)
+				
+                data[i] = newRed
+                data[i + 1] = newGreen
+                data[i + 2] = newBlue
+            }
+            
             c.putImageData(imageData, 0, 0)
         }
     }
