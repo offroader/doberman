@@ -181,32 +181,19 @@ Ext.define('app.Utils', {
         }
         
         function flipV (c, canvas) {
-            var imageData = c.getImageData(0, 0, canvas.width, canvas.height)
-            var data = imageData.data
-            var length = data.length
+            var odd = canvas.height % 2 === 0;
+            var med = odd ? canvas.height / 2 : canvas.height / 2 + 1;
             
-            var newData = []
-            
-            for (var i = 0; i < length; i += 4) {
-                var r = data[length - 1 - i - 3],
-                    g = data[length - 1 - i - 2],
-                    b = data[length - 1 - i - 1],
-                    a = data[length - 1 - i];
-                    
-                newData[i] = r
-                newData[i + 1] = g
-                newData[i + 2] = b
-                newData[i + 3] = a
+            for (var i = 0; (odd ? i <= med : i < med); i++) {
+                var y1 = i;
+                var y2 = canvas.height - i;
+                
+                var imageData1 = c.getImageData(0, y1, canvas.width, 1)
+                var imageData2 = c.getImageData(0, y2, canvas.width, 1)
+                
+                c.putImageData(imageData1, 0, y2)
+                c.putImageData(imageData2, 0, y1)
             }
-            
-            for (var i = 0; i < length; i += 4) {
-                data[i] = newData[i]
-                data[i + 1] = newData[i + 1]
-                data[i + 2] = newData[i + 2]
-                data[i + 3] = newData[i + 3]
-            }
-            
-            c.putImageData(imageData, 0, 0)
         }
         
         function edgeDetection (c, notPut) {
