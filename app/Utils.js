@@ -165,33 +165,19 @@ Ext.define('app.Utils', {
         }
         
         function flipH (c, canvas) {
-            var imageData = c.getImageData(0, 0, canvas.width, canvas.height)
-            var data = imageData.data
-            var length = data.length
+            var odd = canvas.width % 2 === 0;
+            var med = odd ? canvas.width / 2 : canvas.width / 2 + 1;
             
-            var width = canvas.width
-            
-            var height = canvas.height / 2
-            if (height % 2 == 0) {
-                height++
+            for (var i = 0; (odd ? i <= med : i < med); i++) {
+                var x1 = i;
+                var x2 = canvas.width - i;
+                
+                var imageData1 = c.getImageData(x1, 0, 1, canvas.height)
+                var imageData2 = c.getImageData(x2, 0, 1, canvas.height)
+                
+                c.putImageData(imageData1, x2, 0)
+                c.putImageData(imageData2, x1, 0)
             }
-            
-            var newData = []
-            
-            for (var j = 0; j < height; j += 4 * width) {
-                for (var i = 0; i < width; i++) {
-                    newData[length - j * width + i] = data[j * width + i]
-                    newData[length - j * width + i + 1] = data[j * width + i + 1]
-                    newData[length - j * width + i + 2] = data[j * width + i + 2]
-                    newData[length - j * width + i + 3] = data[j * width + i + 3]
-                }
-            }
-            
-            for (var i = 0; i < length; i++) {
-                data[i] = newData[i]
-            }
-            
-            c.putImageData(imageData, 0, 0)
         }
         
         function flipV (c, canvas) {
