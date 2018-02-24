@@ -171,8 +171,8 @@ Ext.define('app.image.Panel', {
             var parentEl = canvas.parentElement
             var overlayCanvas = document.createElement('canvas')
             
-            overlayCanvas.width = MAX_WIDTH
-            overlayCanvas.height = MAX_HEIGHT
+            overlayCanvas.width = canvas.width
+            overlayCanvas.height = canvas.height
             overlayCanvas.style.position = 'absolute'
             overlayCanvas.style.top = '0px'
             overlayCanvas.style.left = '0px'
@@ -181,10 +181,11 @@ Ext.define('app.image.Panel', {
             
             var c = overlayCanvas.getContext('2d')
             
-            var currentX = overlayCanvas.width/4
-            var currentY = overlayCanvas.height/4
-            var currentW = overlayCanvas.width/4
-            var currentH = overlayCanvas.height/4
+            var currentW = Math.floor(overlayCanvas.width / 2)
+            var currentH = Math.floor(overlayCanvas.height / 2)
+            
+            var currentX = Math.floor(currentW / 2)
+            var currentY = Math.floor(currentH / 2)
             
             var interval
             
