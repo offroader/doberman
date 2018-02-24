@@ -148,8 +148,30 @@ Ext.define('app.menu.Panel', {
                 }, {
                     text: 'ამოჭრა',
                     iconCls: 'fa fa-crop',
-                    handler: function () {
-                        that.fireEvent('crop')
+                    handler: function (button) {
+                        button.setDisabled(true)
+                        that.fireEvent('startCropping')
+
+                        var msgBox = Ext.Msg.show({
+                            modal: false,
+                            buttonText: {
+                                yes: 'შენახვა',
+                                no: 'გაუქმება'
+                            },
+                            title:'გსურთ ცვლილებების შენახვა?',
+                            buttons: Ext.Msg.YESNO,
+                            fn: function(btn) {
+                                if (btn === 'yes') {
+                                    that.fireEvent('saveCropped')
+                                } else if (btn === 'no') {
+                                    that.fireEvent('stopCropping')
+                                }
+                                button.setDisabled(false)
+                            }
+                        })
+                        
+                        msgBox.setX((innerWidth - msgBox.getWidth()) / 2)
+                        msgBox.setY(innerHeight - msgBox.getHeight() - 50)
                     }
                 }]
             })

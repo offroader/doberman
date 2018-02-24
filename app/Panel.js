@@ -36,6 +36,15 @@ Ext.define('app.Panel', {
                 },
                 contrast: function (contrast) {
                 	imagePanel.contrast(contrast)
+                },
+                startCropping: function () {
+                    imagePanel.startCropping()
+                },
+                stopCropping: function () {
+                    imagePanel.stopCropping()
+                },
+                saveCropped: function () {
+                    imagePanel.saveCropped()
                 }
             }
         })

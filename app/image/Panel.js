@@ -94,7 +94,7 @@ Ext.define('app.image.Panel', {
         var canvasContainer = Ext.create('Ext.panel.Panel', {
             layout: 'fit',
             overflowY: true,
-            html: '<canvas id="' + canvasId + '"></canvas>',
+            html: '<canvas id="' + canvasId + '" style="position:absolute; top:0px; left:0px;"></canvas>',
             hidden: true
         })
         
@@ -163,6 +163,231 @@ Ext.define('app.image.Panel', {
         that.flipV = function () {
             if (canvasContainer.isVisible()) {
                 utils.flipV(context, canvas)
+            }
+        }
+        
+        
+        that.startCropping = function () {
+            var parentEl = canvas.parentElement
+            var overlayCanvas = document.createElement('canvas')
+            
+            overlayCanvas.width = MAX_WIDTH
+            overlayCanvas.height = MAX_HEIGHT
+            overlayCanvas.style.position = 'absolute'
+            overlayCanvas.style.top = '0px'
+            overlayCanvas.style.left = '0px'
+            
+            parentEl.appendChild(overlayCanvas)
+            
+            var c = overlayCanvas.getContext('2d')
+            
+            var currentX = overlayCanvas.width/4
+            var currentY = overlayCanvas.height/4
+            var currentW = overlayCanvas.width/4
+            var currentH = overlayCanvas.height/4
+            
+            var interval
+            
+            var resizing = false
+            var buffer = 20
+
+            var moving = false
+            var movingStartPoint
+            
+            function paint () {
+                c.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height)
+            
+                c.fillStyle = 'rgba(155, 155, 155, 0.7)'
+                c.fillRect(0, 0, overlayCanvas.width, overlayCanvas.height)
+                c.clearRect(currentX, currentY, currentW, currentH)
+                
+                c.strokeStyle = '#ffffff'
+                c.lineWidth = 4
+                c.strokeRect(currentX - 2, currentY - 2, currentW, currentH)
+            }
+            
+            paint()
+            
+            overlayCanvas.addEventListener('mousemove', function (e) {
+                
+                // left top corner
+                if (e.offsetX > currentX - buffer && e.offsetX < currentX + buffer
+                    && e.offsetY > currentY - buffer && e.offsetY < currentY + buffer) {
+                    
+                    overlayCanvas.style.cursor = 'nw-resize'
+                    
+                    if (resizing) {
+                        currentXDelta = currentX - e.offsetX
+                        currentYDelta = currentY - e.offsetY
+                        
+                        currentX = e.offsetX
+                        currentY = e.offsetY
+                        
+                        currentW += currentXDelta
+                        currentH += currentYDelta
+                    }
+                    
+                    
+                // left bottom corner
+                } else if (e.offsetX > currentX - buffer && e.offsetX < currentX + buffer
+                    && e.offsetY > currentY + currentH - buffer && e.offsetY < currentY + currentH + buffer) {
+                    
+                    overlayCanvas.style.cursor = 'sw-resize'
+                    
+                    if (resizing) {
+                        currentXDelta = currentX - e.offsetX
+                        currentYDelta = e.offsetY - currentY - currentH
+                        
+                        currentX = e.offsetX
+                        //currentY
+                        
+                        currentW += currentXDelta
+                        currentH += currentYDelta
+                    }
+
+                // right top corner                    
+                } else if (e.offsetX > currentX + currentW - buffer && e.offsetX < currentX + currentW + buffer
+                    && e.offsetY > currentY - buffer && e.offsetY < currentY + buffer) {
+                    
+                    overlayCanvas.style.cursor = 'ne-resize'
+                    
+                    if (resizing) {
+                        currentXDelta = e.offsetX - currentX - currentW
+                        currentYDelta = currentY - e.offsetY
+                        
+                        //currentX
+                        currentY = e.offsetY
+                        
+                        currentW += currentXDelta
+                        currentH += currentYDelta
+                    }
+                    
+                    
+                // right bottom corner
+                } else if (e.offsetX > currentX + currentW - buffer && e.offsetX < currentX + currentW + buffer
+                    && e.offsetY > currentY + currentH - buffer && e.offsetY < currentY + currentH + buffer) {
+                    
+                    overlayCanvas.style.cursor = 'se-resize'
+                    
+                    if (resizing) {
+                        currentXDelta = e.offsetX - currentX - currentW
+                        currentYDelta = e.offsetY - currentY - currentH
+                        
+                        currentW += currentXDelta
+                        currentH += currentYDelta
+                    }
+                    
+                // top edge
+                } else if (e.offsetX > currentX + buffer && e.offsetX < currentX + currentW - buffer
+                        && e.offsetY > currentY - buffer && e.offsetY < currentY + buffer) {
+                        
+                    overlayCanvas.style.cursor = 'n-resize'
+                
+                    if (resizing) {
+                        currentYDelta = currentY - e.offsetY
+                        currentY = e.offsetY
+                        currentH += currentYDelta
+                    }
+                
+                // bottom edge
+                } else if (e.offsetX > currentX + buffer && e.offsetX < currentX + currentW - buffer
+                        && e.offsetY > currentY + currentH - buffer && e.offsetY < currentY + currentH + buffer) {
+                        
+                    overlayCanvas.style.cursor = 's-resize'
+                
+                    if (resizing) {
+                        currentYDelta = e.offsetY - currentY - currentH
+                        currentH += currentYDelta
+                    }
+                
+                
+                // left edge
+                } else if (e.offsetY > currentY + buffer && e.offsetY < currentY + currentH - buffer
+                        && e.offsetX > currentX - buffer && e.offsetX < currentX + buffer) {
+                        
+                    overlayCanvas.style.cursor = 'w-resize'
+                
+                    if (resizing) {
+                        currentXDelta = currentX - e.offsetX
+                        currentX = e.offsetX
+                        currentW += currentXDelta
+                    }
+                
+                // right edge
+                } else if (e.offsetY > currentY + buffer && e.offsetY < currentY + currentH - buffer
+                        && e.offsetX > currentX + currentW - buffer && e.offsetX < currentX + currentW + buffer) {
+                        
+                    overlayCanvas.style.cursor = 'e-resize'
+                
+                    if (resizing) {
+                        currentXDelta = e.offsetX - currentX - currentW
+                        currentW += currentXDelta
+                    }
+                        
+                } else {
+                    overlayCanvas.style.cursor = 'pointer'
+                    
+                    if (moving) {
+                        var deltaX = e.offsetX - movingStartPoint.x
+                        var deltaY = e.offsetY - movingStartPoint.y
+                        
+                        movingStartPoint.x = e.offsetX
+                        movingStartPoint.y = e.offsetY
+                        
+                        currentX = currentX + deltaX
+                        currentY = currentY + deltaY
+                    }
+                }
+            })
+            
+            overlayCanvas.addEventListener('mousedown', function (e) {
+                if (
+                    (e.offsetX > currentX - buffer && e.offsetX < currentX + buffer
+                        && e.offsetY > currentY - buffer && e.offsetY < currentY + currentH + buffer)
+                    
+                    || (e.offsetX > currentX + currentW - buffer && e.offsetX < currentX + currentW + buffer
+                        && e.offsetY > currentY - buffer && e.offsetY < currentY + currentH + buffer)
+                    
+                    || (e.offsetY > currentY - buffer && e.offsetY < currentY + buffer
+                        && e.offsetX > currentX - buffer && e.offsetX < currentX + currentW + buffer)
+                    
+                    || (e.offsetY > currentY + currentH - buffer && e.offsetY < currentY + currentH + buffer
+                        && e.offsetX > currentX - buffer && e.offsetX < currentX + currentW + buffer) 
+                ) {
+                    
+                    resizing = true
+                    moving = false
+                    interval = setInterval(paint, 10)
+                    
+                } else {
+                    resizing = false
+                    moving = true
+                    movingStartPoint = {
+                        x: e.offsetX,
+                        y: e.offsetY
+                    }
+                    
+                    interval = setInterval(paint, 10)
+                }
+            })
+            
+            overlayCanvas.addEventListener('mouseup', function (e) {
+                resizing = false
+                moving = false
+                clearInterval(interval)
+            })
+            
+            that.saveCropped = function () {
+                var imageData = context.getImageData(currentX, currentY, currentW, currentH)
+                canvas.width = currentW
+                canvas.height = currentH
+                context.putImageData(imageData, 0, 0)
+                that.stopCropping()
+            }
+            
+            that.stopCropping = function () {
+                clearInterval(interval)
+                parentEl.removeChild(overlayCanvas)
             }
         }
         
