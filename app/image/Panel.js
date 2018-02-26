@@ -94,7 +94,7 @@ Ext.define('app.image.Panel', {
         var canvasContainer = Ext.create('Ext.panel.Panel', {
             layout: 'fit',
             overflowY: true,
-            html: '<canvas id="' + canvasId + '" style="position:absolute; top:0px; left:0px;"></canvas><div style="width:100%;height:100%;background-color:#cfcfcf"></div>',
+            html: '<canvas id="' + canvasId + '" style="position:absolute; top:0px; left:0px;"></canvas>',
             hidden: true
         })
         
