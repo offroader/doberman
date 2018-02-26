@@ -94,7 +94,7 @@ Ext.define('app.image.Panel', {
         var canvasContainer = Ext.create('Ext.panel.Panel', {
             layout: 'fit',
             overflowY: true,
-            html: '<canvas id="' + canvasId + '" style="position:absolute; top:0px; left:0px;"></canvas>',
+            html: '<canvas id="' + canvasId + '" style="position:absolute; top:0px; left:0px;"></canvas><div style="width:100%;height:100%;background-color:#cfcfcf"></div>',
             hidden: true
         })
         
@@ -335,8 +335,16 @@ Ext.define('app.image.Panel', {
                         movingStartPoint.x = e.offsetX
                         movingStartPoint.y = e.offsetY
                         
-                        currentX = currentX + deltaX
-                        currentY = currentY + deltaY
+                        currentX = Math.max(currentX + deltaX, 0)
+                        currentY = Math.max(currentY + deltaY, 0)
+                        
+                        if (currentX + currentW > overlayCanvas.width) {
+                            currentX = overlayCanvas.width - currentW
+                        }
+                        
+                        if (currentY + currentH > overlayCanvas.height) {
+                            currentY = overlayCanvas.height - currentH
+                        }
                     }
                 }
             })
