@@ -168,7 +168,6 @@ Ext.define('app.image.Panel', {
         
         
         that.startCropping = function () {
-            var parentEl = canvas.parentElement
             var overlayCanvas = document.createElement('canvas')
             
             overlayCanvas.width = canvas.width
@@ -177,6 +176,7 @@ Ext.define('app.image.Panel', {
             overlayCanvas.style.top = '0px'
             overlayCanvas.style.left = '0px'
             
+            var parentEl = canvas.parentElement
             parentEl.appendChild(overlayCanvas)
             
             var c = overlayCanvas.getContext('2d')
@@ -329,6 +329,8 @@ Ext.define('app.image.Panel', {
                     overlayCanvas.style.cursor = 'pointer'
                     
                     if (moving) {
+                        overlayCanvas.style.cursor = 'move'
+                        
                         var deltaX = e.offsetX - movingStartPoint.x
                         var deltaY = e.offsetY - movingStartPoint.y
                         
@@ -376,6 +378,8 @@ Ext.define('app.image.Panel', {
                         y: e.offsetY
                     }
                     
+                    overlayCanvas.style.cursor = 'move'
+                    
                     interval = setInterval(paint, 10)
                 }
             })
@@ -384,6 +388,8 @@ Ext.define('app.image.Panel', {
                 resizing = false
                 moving = false
                 clearInterval(interval)
+                
+                overlayCanvas.style.cursor = 'pointer'
             })
             
             that.saveCropped = function () {
