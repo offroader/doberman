@@ -37,8 +37,8 @@ Ext.define('app.Panel', {
                 contrast: function (contrast) {
                 	imagePanel.contrast(contrast)
                 },
-                startCropping: function () {
-                    imagePanel.startCropping()
+                startCropping: function (afterStart) {
+                    imagePanel.startCropping(afterStart)
                 },
                 stopCropping: function () {
                     imagePanel.stopCropping()

@@ -62,11 +62,11 @@ Ext.define('app.menu.Panel', {
             icon: 'static/icon/favicon.png',
             scale: 'large',
             align: 'center',
-                border: false,
+            border: false,
+            disabled: true,
             style: {
                 marginRight: '20px'
-            },
-            disabled: true
+            }
         })
         
         var fileMenu = Ext.create('Ext.button.Split', {
@@ -149,29 +149,30 @@ Ext.define('app.menu.Panel', {
                     text: 'ამოჭრა',
                     iconCls: 'fa fa-crop',
                     handler: function (button) {
-                        button.setDisabled(true)
-                        that.fireEvent('startCropping')
-
-                        var msgBox = Ext.Msg.show({
-                            modal: false,
-                            buttonText: {
-                                yes: 'შენახვა',
-                                no: 'გაუქმება'
-                            },
-                            title:'გსურთ ცვლილებების შენახვა?',
-                            buttons: Ext.Msg.YESNO,
-                            fn: function(btn) {
-                                if (btn === 'yes') {
-                                    that.fireEvent('saveCropped')
-                                } else if (btn === 'no') {
-                                    that.fireEvent('stopCropping')
+                        that.fireEvent('startCropping', function () {
+                            button.setDisabled(true)
+                            
+                            var msgBox = Ext.Msg.show({
+                                modal: false,
+                                buttonText: {
+                                    yes: 'შენახვა',
+                                    no: 'გაუქმება'
+                                },
+                                title:'გსურთ ცვლილებების შენახვა?',
+                                buttons: Ext.Msg.YESNO,
+                                fn: function (result) {
+                                    if (result === 'yes') {
+                                        that.fireEvent('saveCropped')
+                                    } else if (result === 'no') {
+                                        that.fireEvent('stopCropping')
+                                    }
+                                    button.setDisabled(false)
                                 }
-                                button.setDisabled(false)
-                            }
+                            })
+                            
+                            msgBox.setX((innerWidth - msgBox.getWidth()) / 2)
+                            msgBox.setY(innerHeight - msgBox.getHeight() - 50)
                         })
-                        
-                        msgBox.setX((innerWidth - msgBox.getWidth()) / 2)
-                        msgBox.setY(innerHeight - msgBox.getHeight() - 50)
                     }
                 }]
             })
