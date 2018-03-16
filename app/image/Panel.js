@@ -161,9 +161,13 @@ Ext.define('app.image.Panel', {
         that.downloadImage = function () {
             if (canvasContainer.isVisible()) {
                 var link = document.createElement('a')
-                link.setAttribute('download', 'download.png')
+                link.setAttribute('download', 'download-' + Date.now() + '.png')
                 link.setAttribute('href', canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream'))
+                document.body.appendChild(link)
                 link.click()
+                setTimeout(function () {
+                    document.body.removeChild(link)
+                }, 1000)
             }
         }
         
