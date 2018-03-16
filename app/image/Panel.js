@@ -7,8 +7,6 @@ Ext.define('app.image.Panel', {
         const MAX_WIDTH = 2560
         const MAX_HEIGHT = 1440
         
-        var utils = Ext.create('app.Utils')
-
         var canvas,
             context,
             storedData,
@@ -110,11 +108,26 @@ Ext.define('app.image.Panel', {
         })
         
         that.addFilter = function (filter) {
-            utils.addFilter(canvas, filter)
+            var filters = {
+                blur: 'app.utils.Blur',
+                edgeDetection: 'app.utils.EdgeDetection',
+                grayScale: 'app.utils.GrayScale',
+                invertColors: 'app.utils.InvertColors',
+                laplacian: 'app.utils.Laplacian',
+                monochrome: 'app.utils.MonochromeOtsu',
+                monochromeOtsu: 'app.utils.MonochromeOtsu',
+                sepia: 'app.utils.Sepia',
+                sepia2: 'app.utils.Sepia2'
+            }
+        
+            if (filters.hasOwnProperty(filter)) {
+                var panelName = filters[filter]
+                Ext.create(panelName).filter(canvas)
+            }
         }
         
         that.contrast = function (contrast) {
-        	utils.contrast(canvas, contrast)
+            Ext.create('app.utils.Contrast').filter(canvas, contrast)
         }
         
         that.restoreImage = function () {
@@ -144,31 +157,31 @@ Ext.define('app.image.Panel', {
         
         that.rotateLeft = function () {
             if (canvasContainer.isVisible()) {
-                utils.rotate(canvas, context, -90)
+                Ext.create('app.utils.Rotate').rotate(canvas, -90)
             }
         }
         
         that.rotateRight = function () {
             if (canvasContainer.isVisible()) {
-                utils.rotate(canvas, context, 90)
+                Ext.create('app.utils.Rotate').rotate(canvas, 90)
             }
         }
         
         that.flipH = function () {
             if (canvasContainer.isVisible()) {
-                utils.flipH(context, canvas)
+                Ext.create('app.utils.Flip').flipH(canvas)
             }
         }
         
         that.flipV = function () {
             if (canvasContainer.isVisible()) {
-                utils.flipV(context, canvas)
+                Ext.create('app.utils.Flip').flipV(canvas)
             }
         }
         
         that.startCropping = function (afterStart) {
             if (canvasContainer.isVisible()) {
-                utils.startCropping(that, canvas)
+                Ext.create('app.utils.Crop').startCropping(that, canvas)
                 if (typeof afterStart === 'function') {
                     afterStart.call()
                 }

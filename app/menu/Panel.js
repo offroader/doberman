@@ -5,8 +5,6 @@ Ext.define('app.menu.Panel', {
         
         const ITEM_WIDTH = 160
         
-        var utils = Ext.create('app.Utils')
-        
         var menuConfig = [{
             text: 'შავ-თეთრი',
             filter: 'grayScale',
