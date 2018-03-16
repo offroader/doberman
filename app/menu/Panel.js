@@ -55,6 +55,18 @@ Ext.define('app.menu.Panel', {
             })
         })
         
+        filterMenuItems.push(Ext.create('Ext.menu.Item', {
+            text: 'კონტრასტი',
+            filter: 'contrast',
+            icon: 'static/icon/contrast.png',
+            align: 'center',
+            handler: function (button) {
+                that.fireEvent('contrast', function () {
+                    button.setDisabled(true)
+                })
+            }
+        }))
+        
         var logo = Ext.create('Ext.button.Button', {
             text: 'Doberman',
             icon: 'static/icon/favicon.png',
@@ -176,27 +188,7 @@ Ext.define('app.menu.Panel', {
             })
         })
         
-        var contrastButton = Ext.create('Ext.button.Button', {
-            icon: 'static/icon/grayscale.png',
-            style: {marginRight: '0'},
-            handler: function () {
-            	that.fireEvent('contrast', contrastField.getValue())
-            }
-        })
-        
-        var contrastField = Ext.create('Ext.form.field.Number', {
-        	width: 80,
-        	minValue: -255,
-        	maxValue: 255,
-        	value: 0,
-        	listeners: {
-        		change: function (field) {
-        			that.fireEvent('contrast', field.getValue())
-        		}
-        	}
-        })
-        
-        that.tbar = [logo, fileMenu, filterMenu, contrastButton, contrastField, editMenu]
+        that.tbar = [logo, fileMenu, filterMenu, editMenu]
         
         that.callParent(arguments)
         

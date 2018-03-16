@@ -34,8 +34,8 @@ Ext.define('app.Panel', {
                 flipV: function () {
                     imagePanel.flipV()
                 },
-                contrast: function (contrast) {
-                	imagePanel.contrast(contrast)
+                contrast: function () {
+                	imagePanel.contrast()
                 },
                 startCropping: function (afterStart) {
                     imagePanel.startCropping(afterStart)

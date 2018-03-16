@@ -1,4 +1,4 @@
-function createViewport () {
+Ext.onReady(function createViewport () {
     Ext.QuickTips.init()
         
     var viewport = Ext.create('Ext.Viewport', {
@@ -6,4 +6,4 @@ function createViewport () {
         renderTo: document.body,
         items: [Ext.create('app.Panel')]
     })
-}
+})

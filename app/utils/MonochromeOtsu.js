@@ -22,7 +22,7 @@ Ext.define('app.utils.MonochromeOtsu', {
             
             var threshold = otsu(histogram, imageData.data.length / 4)
 
-            console.log("threshold = %s", threshold)
+            //console.log("threshold = %s", threshold)
             
             for (var i = 0; i < imageData.data.length; i += 4) {
                 var color = imageData.data[i] >= threshold ? 255 : 0

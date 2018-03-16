@@ -11,7 +11,8 @@ Ext.define('app.image.Panel', {
             context,
             storedData,
             storedWidth,
-            storedHeight;
+            storedHeight,
+            currentContrast;
         
         var uploadButton = Ext.create('Ext.form.field.File', {
             buttonText: 'ატვირთვა...',
@@ -52,6 +53,8 @@ Ext.define('app.image.Panel', {
                         
                         buttonContainer.setVisible(false)
                         canvasContainer.setVisible(true)
+                        
+                        currentContrast = 0
                     }
                     
                     image.src = src
@@ -126,8 +129,25 @@ Ext.define('app.image.Panel', {
             }
         }
         
-        that.contrast = function (contrast) {
-            Ext.create('app.utils.Contrast').filter(canvas, contrast)
+        that.contrast = function () {
+            const contrastUtil = Ext.create('app.utils.Contrast')
+            const beforeContrast = context.getImageData(0, 0, canvas.width, canvas.height)
+            
+            var w = Ext.create('app.image.contrast.Window', {
+                currentValue: currentContrast || 0,
+                listeners: {
+                    contrastChange: function (value) {
+                        context.putImageData(beforeContrast, 0, 0)
+                        contrastUtil.filter(canvas, value)
+                    },
+                    contrastSave: function (value) {
+                        currentContrast = value
+            		},
+            		contrastCancel: function () {
+            			context.putImageData(beforeContrast, 0, 0)
+            		}
+                }
+            })
         }
         
         that.restoreImage = function () {
