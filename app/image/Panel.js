@@ -129,25 +129,32 @@ Ext.define('app.image.Panel', {
             }
         }
         
-        that.contrast = function () {
-            const contrastUtil = Ext.create('app.utils.Contrast')
-            const beforeContrast = context.getImageData(0, 0, canvas.width, canvas.height)
-            
-            var w = Ext.create('app.image.contrast.Window', {
-                currentValue: currentContrast || 0,
-                listeners: {
-                    contrastChange: function (value) {
-                        context.putImageData(beforeContrast, 0, 0)
-                        contrastUtil.filter(canvas, value)
-                    },
-                    contrastSave: function (value) {
-                        currentContrast = value
-            		},
-            		contrastCancel: function () {
-            			context.putImageData(beforeContrast, 0, 0)
-            		}
-                }
-            })
+        that.contrast = function (button) {
+            if (canvasContainer.isVisible()) {
+                button.setDisabled(true)
+                
+                const contrastUtil = Ext.create('app.utils.Contrast')
+                const beforeContrast = context.getImageData(0, 0, canvas.width, canvas.height)
+                
+                var w = Ext.create('app.image.contrast.Window', {
+                    currentValue: currentContrast || 0,
+                    listeners: {
+                        contrastChange: function (value) {
+                            context.putImageData(beforeContrast, 0, 0)
+                            contrastUtil.filter(canvas, value)
+                        },
+                        contrastSave: function (value) {
+                            currentContrast = value
+                		},
+                		contrastCancel: function () {
+                			context.putImageData(beforeContrast, 0, 0)
+                		},
+                		close: function () {
+                		    button.setDisabled(false)
+                		}
+                    }
+                })
+            }
         }
         
         that.restoreImage = function () {
@@ -155,6 +162,7 @@ Ext.define('app.image.Panel', {
                 canvas.width = storedWidth
                 canvas.height = storedHeight
                 context.putImageData(storedData, 0, 0)
+                currentContrast = 0
             }
         }
         

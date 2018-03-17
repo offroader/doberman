@@ -61,9 +61,7 @@ Ext.define('app.menu.Panel', {
             icon: 'static/icon/contrast.png',
             align: 'center',
             handler: function (button) {
-                that.fireEvent('contrast', function () {
-                    button.setDisabled(true)
-                })
+                that.fireEvent('contrast', button)
             }
         }))
         
