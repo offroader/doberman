@@ -15,7 +15,7 @@ Ext.define('app.image.Panel', {
             currentContrast;
         
         var uploadButton = Ext.create('Ext.form.field.File', {
-            buttonText: 'ატვირთვა...',
+            buttonText: 'ფოტოს არჩევა...',
             buttonOnly: true,
             hideLabel: true,
             listeners: {
