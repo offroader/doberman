@@ -5,7 +5,7 @@ Ext.define('app.image.resize.Window', {
     buttonAlign: 'center',
     autoShow: true,
     width: 400,
-    height: 220,
+    height: 250,
     closable: false,
     resizable: false,
     constructor: function (config) {
@@ -20,6 +20,7 @@ Ext.define('app.image.resize.Window', {
         var widthField = Ext.create('Ext.form.field.Number', {
             value: width,
             minValue: 0,
+            maxValue: 5000,
             increment: 1,
             width: 100,
             listeners: {
@@ -34,6 +35,7 @@ Ext.define('app.image.resize.Window', {
         var heightField = Ext.create('Ext.form.field.Number', {
             value: height,
             minValue: 0,
+            maxValue: 5000,
             increment: 1,
             width: 100,
             listeners: {
@@ -42,6 +44,16 @@ Ext.define('app.image.resize.Window', {
                     widthField.setValue(Math.round(value / ratioH))
                     widthField.resumeEvents()
                 }
+            }
+        })
+        
+        var errorField = Ext.create('Ext.form.field.Display', {
+            hidden: true,
+            value: 'მაქსიმალური ზომა 5000x5000',
+            fieldStyle: {
+                color: 'red',
+                fontStyle: 'italic',
+                marginLeft: '70px'
             }
         })
         
@@ -72,17 +84,22 @@ Ext.define('app.image.resize.Window', {
                     value: 'px',
                     margin: '0 0 0 10'
                 }]
-            }]
+            }, errorField]
         }]
         
         that.buttons = [{
             text: 'შენახვა',
             handler: function () {
-                that.fireEvent('save', {
-                    width: widthField.getValue(),
-                    height: heightField.getValue()
-                })
-                that.close()
+                if (widthField.isValid() && heightField.isValid()) {
+                    errorField.hide()
+                    that.fireEvent('save', {
+                        width: widthField.getValue(),
+                        height: heightField.getValue()
+                    })
+                    that.close()
+                } else {
+                    errorField.show()
+                }
             }
         }, {
             text: 'გაუქმება',
