@@ -25,11 +25,11 @@ Ext.define('app.menu.Panel', {
             text: 'სეპია',
             filter: 'sepia',
             icon: 'static/icon/sepia.png'
-        }, {
+        }, /*{
             text: 'სეპია-2',
             filter: 'sepia2',
             icon: 'static/icon/sepia.png'
-        }, {
+        }, */{
             text: 'ბუნდოვანი',
             filter: 'blur',
             icon: 'static/icon/blur.png'
