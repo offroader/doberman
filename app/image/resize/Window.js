@@ -35,7 +35,7 @@ Ext.define('app.image.resize.Window', {
         })
         
         var heightField = Ext.create('Ext.form.field.Number', {
-            fieldLabel: 'სიგრძე',
+            fieldLabel: 'სიმაღლე',
             labelAlign: 'right',
             minValue: 0,
             value: height,
