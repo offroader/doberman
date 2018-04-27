@@ -1,12 +1,11 @@
 Ext.define('app.image.resize.Window', {
     extend: 'Ext.window.Window',
     title: 'ზომის შეცვლა',
-    layout: 'anchor',
+    layout: 'fit',
     buttonAlign: 'center',
     autoShow: true,
-    width: 500,
-    height: 200,
-    bodyPadding: 20,
+    width: 400,
+    height: 220,
     closable: false,
     resizable: false,
     constructor: function (config) {
@@ -19,12 +18,10 @@ Ext.define('app.image.resize.Window', {
         var ratioH = height/width
         
         var widthField = Ext.create('Ext.form.field.Number', {
-            fieldLabel: 'სიგანე',
-            labelAlign: 'right',
-            minValue: 0,
             value: width,
+            minValue: 0,
             increment: 1,
-            width: 200,
+            width: 100,
             listeners: {
                 change: function (f, value) {
                     heightField.suspendEvents()
@@ -35,12 +32,10 @@ Ext.define('app.image.resize.Window', {
         })
         
         var heightField = Ext.create('Ext.form.field.Number', {
-            fieldLabel: 'სიმაღლე',
-            labelAlign: 'right',
-            minValue: 0,
             value: height,
+            minValue: 0,
             increment: 1,
-            width: 200,
+            width: 100,
             listeners: {
                 change: function (f, value) {
                     widthField.suspendEvents()
@@ -50,7 +45,35 @@ Ext.define('app.image.resize.Window', {
             }
         })
         
-        that.items = [widthField, heightField]
+        that.items = [{
+            xtype: 'form',
+            border: false,
+            bodyPadding: 20,
+            layout: 'anchor',
+            items: [{
+                xtype: 'fieldcontainer',
+                fieldLabel: 'სიგანე',
+                labelAlign: 'right',
+                anchor: '100%',
+                layout: 'hbox',
+                items: [widthField, {
+                    xtype: 'displayfield',
+                    value: 'px',
+                    margin: '0 0 0 10'
+                }]
+            }, {
+                xtype: 'fieldcontainer',
+                fieldLabel: 'სიმაღლე',
+                labelAlign: 'right',
+                anchor: '100%',
+                layout: 'hbox',
+                items: [heightField, {
+                    xtype: 'displayfield',
+                    value: 'px',
+                    margin: '0 0 0 10'
+                }]
+            }]
+        }]
         
         that.buttons = [{
             text: 'შენახვა',
