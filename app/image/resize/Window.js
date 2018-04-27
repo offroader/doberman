@@ -19,7 +19,7 @@ Ext.define('app.image.resize.Window', {
         
         var widthField = Ext.create('Ext.form.field.Number', {
             value: width,
-            minValue: 0,
+            minValue: 1,
             maxValue: 5000,
             increment: 1,
             width: 100,
@@ -34,7 +34,7 @@ Ext.define('app.image.resize.Window', {
         
         var heightField = Ext.create('Ext.form.field.Number', {
             value: height,
-            minValue: 0,
+            minValue: 1,
             maxValue: 5000,
             increment: 1,
             width: 100,
