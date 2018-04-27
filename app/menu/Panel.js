@@ -182,6 +182,12 @@ Ext.define('app.menu.Panel', {
                             msgBox.setY(innerHeight - msgBox.getHeight() - 50)
                         })
                     }
+                }, {
+                    text: 'ზომის შეცვლა',
+                    iconCls: 'fa fa-arrows-alt',
+                    handler: function (button) {
+                        that.fireEvent('resize', button)
+                    }
                 }]
             })
         })

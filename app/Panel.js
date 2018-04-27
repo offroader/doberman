@@ -45,6 +45,9 @@ Ext.define('app.Panel', {
                 },
                 saveCropped: function () {
                     imagePanel.saveCropped()
+                },
+                resize: function (button) {
+                    imagePanel.resize(button)
                 }
             }
         })

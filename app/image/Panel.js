@@ -220,6 +220,27 @@ Ext.define('app.image.Panel', {
             }
         }
         
+        that.resize = function (button) {
+            if (canvasContainer.isVisible()) {
+                button.setDisabled(true)
+                
+                const resizeUtil = Ext.create('app.utils.Resize')
+                
+                var w = Ext.create('app.image.resize.Window', {
+                    currentWidth: canvas.width,
+                    currentHeight: canvas.height,
+                    listeners: {
+                        save: function (size) {
+                            resizeUtil.resize(canvas, size)
+                		},
+                		close: function () {
+                		    button.setDisabled(false)
+                		}
+                    }
+                })
+            }
+        }
+        
         function scaleImage (from, to) {
             var w = from.width,
                 h = from.height;
