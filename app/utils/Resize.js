@@ -1,6 +1,6 @@
 Ext.define('app.utils.Resize', {
     constructor: function () {
-        this.resize = function (canvas, size) {
+        this.resizeImage = function (canvas, size) {
             var width = size.width
             var height = size.height
 

@@ -186,7 +186,7 @@ Ext.define('app.menu.Panel', {
                     text: 'ზომის შეცვლა',
                     iconCls: 'fa fa-arrows-alt',
                     handler: function (button) {
-                        that.fireEvent('resize', button)
+                        that.fireEvent('resizeImage', button)
                     }
                 }]
             })

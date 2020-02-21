@@ -220,7 +220,7 @@ Ext.define('app.image.Panel', {
             }
         }
         
-        that.resize = function (button) {
+        that.resizeImage = function (button) {
             if (canvasContainer.isVisible()) {
                 button.setDisabled(true)
                 
@@ -231,7 +231,7 @@ Ext.define('app.image.Panel', {
                     currentHeight: canvas.height,
                     listeners: {
                         save: function (size) {
-                            resizeUtil.resize(canvas, size)
+                            resizeUtil.resizeImage(canvas, size)
                 		},
                 		close: function () {
                 		    button.setDisabled(false)
